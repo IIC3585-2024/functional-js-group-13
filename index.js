@@ -107,26 +107,18 @@ function tranformToHTML(array) {
     const addStrong = addTag('strong')
     const addEm = addTag('em')
     const addDel = addTag('del')
+    const addCode = addTag('code')
     const formatLine = (lines, index = 0, newArray = []) => {
       if (lines.length === index) {
         return newArray
       }
       const currentLine = lines[index]
-      const bold = currentLine.match(regex.bold)
-      const italic = currentLine.match(regex.italic)
-      const strikethrough = currentLine.match(regex.strikethrough)
-      if (bold) {
-        const content = bold[1] || bold[2]
-        return formatLine(lines, index + 1, [...newArray, addStrong(content)])
-      } else if (italic) {
-        const content = italic[1] || italic[2]
-        return formatLine(lines, index + 1, [...newArray, addEm(content)])
-      } else if (strikethrough) {
-        const content = strikethrough[1]
-        return formatLine(lines, index + 1, [...newArray, addDel(content)])
-      } else {
-        return formatLine(lines, index + 1, [...newArray, currentLine])
-      }
+        .replace(regex.bold, (_, g1, g2) => addStrong(g1 || g2))
+        .replace(regex.italic, (_, g1, g2) => addEm(g1 || g2))
+        .replace(regex.strikethrough, (_, g1) => addDel(g1))
+        .replace(regex.code, (_, g1) => addCode(g1))
+
+      return formatLine(lines, index + 1, [...newArray, currentLine])
     }
     return formatLine(lines)
   }
