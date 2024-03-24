@@ -143,6 +143,6 @@ function markdownToHtml(markdownText) {
   });
 }
 
-const markdown = fs.readFileSync('markdown.md', 'utf8')
+const markdown = fs.readFileSync(process.argv[2], 'utf8')
 
 markdownToHtml(markdown)
