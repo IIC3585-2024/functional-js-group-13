@@ -1,13 +1,8 @@
-const regex = {
-  list: /^\s*(- |\* |\+ |[1-9]\d*\. )/,
-  unorderedList: /^\s*(- |\* |\+ )/,
-  orderedList: /^\s*([1-9]\d*\. )/,
-  heading: /^\s*#{1,6}\s+/,
-  horizontalRule: /^ {0,4}(?:_{3,}|-{3,}|\*{3,})\s*$/,
-  bold: /\*\*(.*?)\*\*|__(.*?)__/g,
-  italic: /\*(.*?)\*|_(.*?)_/g,
-  strikethrough: /~~(.*?)~~/g,
-  code: /`(.*?)`/g,
-}
 
-module.exports = { regex }
+export const regex = {
+  horizontalRule: {regex: /^ {0,4}(-{3,}|\*{3,}|_{3,})/, replace: '<hr>'},
+  bold: {regex: /\*\*(.*?)\*\*|__(.*?)__/g, replace: '<strong>$1$2</strong>'},
+  italic: {regex: /\*(.*?)\*|_(.*?)_/g, replace: '<em>$1$2</em>'},
+  strikethrough: {regex: /~~(.*?)~~/g, replace: '<strike>$1</strike>'},
+  code: {regex: /``(.*?)``/g, replace: '<code>$1</code>'},
+}
