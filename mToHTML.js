@@ -38,7 +38,7 @@ const isNormalLine = (lines) => lines.map(line => line != "" ? "<p>" + line + "<
 const getFormattedWords = (line, delimiters) => {
   return delimiters.flatMap(delimiter =>
     line.split(delimiter).filter((_, i) => i % 2 === 1).filter(elemento => elemento !== '')
-  );
+  )
 }
 
 const strongWordsFormatter = (line) => line.replace(regex.bold.regex, regex.bold.replace)
@@ -47,8 +47,8 @@ const strikeThroughWordsFormatter = (line) => line.replace(regex.strikethrough.r
 const codeWordsFormatter = (line) => line.replace(regex.code.regex, regex.code.replace)
 
 const getIndentationCount = (line) => {
-  return _.takeWhile(line, (char) => char === ' ').length;
-};
+  return _.takeWhile(line, (char) => char === ' ').length
+}
 
 const markdownToHtml = (markdown) => {
   const separateLines = markdown.split("\n").filter(line => line != "")
@@ -57,15 +57,15 @@ const markdownToHtml = (markdown) => {
     [isNotOrderListType, noOrderedListFormatter],
     [isOrderListType, orderListFormatter],
     [(line) => line != "", isNormalLine],
-  ];
+  ]
 
   const blocks = separateLines.reduce((blocksArray, line) => {
-    const [, functionType] = blockConverters.find(([isType]) => isType(line));
+    const [, functionType] = blockConverters.find(([isType]) => isType(line))
     line = ' ' + line
     const strongWords = getFormattedWords(line, ['**', '__'])
-    const italicWords = getFormattedWords(line, ['*', '_']);
-    const strikeThroughWords = getFormattedWords(line, ['~~']);
-    const codeWords = getFormattedWords(line, ['``']);
+    const italicWords = getFormattedWords(line, ['*', '_'])
+    const strikeThroughWords = getFormattedWords(line, ['~~'])
+    const codeWords = getFormattedWords(line, ['``'])
     line = !_.isEmpty(strongWords) ? strongWordsFormatter(line) : line
     line = !_.isEmpty(italicWords) ? italicWordsFormatter(line) : line
     line = !_.isEmpty(strikeThroughWords) ? strikeThroughWordsFormatter(line) : line
@@ -76,7 +76,7 @@ const markdownToHtml = (markdown) => {
   }
     , [])
 
-  const result = blocks.map(([func, ...args]) => func(args));
+  const result = blocks.map(([func, ...args]) => func(args))
   return result.flat(Infinity).join('\n')
 }
 
